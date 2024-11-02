@@ -2,25 +2,22 @@ import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 
 @Controller('assignments')
 export class AssignmentsController {
-  @Get('fibonacci/:n')
-  getFibonacci(@Param('n', ParseIntPipe) n: number): { sequence: number[] } {
-    const sequence = this.generateFibonacci(n);
-    return { sequence };
+  @Get('factorial/:number')
+  calculateFactorial(@Param('number', ParseIntPipe) number: number): { factorial: number | string } {
+    const result = this.factorial(number);
+    return { factorial: result };
   }
 
-  private generateFibonacci(n: number): number[] {
-    if (n <= 0) return [];
-    if (n === 1) return [0];
+  // Helper function to calculate factorial using an iterative approach
+  private factorial(num: number): number | string {
+    if (num < 0) return "Factorial not defined for negative numbers"; // Handle negative input
+    if (num === 0 || num === 1) return 1;
 
-    const sequence = [0, 1];
-    for (let i = 2; i < n; i++) {
-      sequence.push(sequence[i - 1] + sequence[i - 2]);
+    let result = 1;
+    for (let i = 2; i <= num; i++) {
+      result *= i;
     }
-    return sequence;
-  }
 
-  @Get('test')
-  testRoute() {
-    return { message: 'Test endpoint is working' };
+    return result;
   }
 }
